@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busy Mouse</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .busy-mouse-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+        }
+
+        /* Main mouse body */
+        .mouse-body {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 100px;
+            background: #fff;
+            border-radius: 40px 40px 50px 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Mouse ear - left */
+        .ear-left {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            width: 20px;
+            height: 30px;
+            background: #fff;
+            border-radius: 50% 50% 40% 40%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Mouse ear - right */
+        .ear-right {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            width: 20px;
+            height: 30px;
+            background: #fff;
+            border-radius: 50% 50% 40% 40%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Mouse eyes */
+        .eye {
+            position: absolute;
+            top: 35px;
+            width: 8px;
+            height: 8px;
+            background: #333;
+            border-radius: 50%;
+        }
+
+        .eye-left {
+            left: 25px;
+        }
+
+        .eye-right {
+            right: 25px;
+        }
+
+        /* Mouse nose */
+        .nose {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: #ff6b9d;
+            border-radius: 50%;
+        }
+
+        /* Busy indicator - spinning circle */
+        .busy-indicator {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-right: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Cursor trail effect */
+        .trail {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 60px;
+            height: 60px;
+            pointer-events: none;
+        }
+
+        .trail-dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: fadeOut 0.6s ease-out forwards;
+        }
+
+        /* Pulsing animation for mouse body */
+        @keyframes pulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.05);
+            }
+        }
+
+        /* Spinning animation */
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Fade out animation for trail */
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0);
+            }
+        }
+
+        /* Eye blink animation */
+        @keyframes blink {
+            0%, 49%, 100% {
+                height: 8px;
+            }
+            50% {
+                height: 1px;
+            }
+        }
+
+        .eye {
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        .mouse-body {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        /* Tail */
+        .tail {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            width: 40px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            transform: translateX(-50%) rotate(-20deg);
+            transform-origin: left center;
+            animation: swish 0.8s ease-in-out infinite;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes swish {
+            0%, 100% {
+                transform: translateX(-50%) rotate(-20deg);
+            }
+            50% {
+                transform: translateX(-50%) rotate(20deg);
+            }
+        }
+
+        .info {
+            color: white;
+            margin-top: 40px;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⏳ Busy Mouse</h1>
+        <div class="busy-mouse-container">
+            <div class="mouse-body">
+                <div class="ear-left"></div>
+                <div class="ear-right"></div>
+                <div class="eye eye-left"></div>
+                <div class="eye eye-right"></div>
+                <div class="nose"></div>
+                <div class="tail"></div>
+            </div>
+            <div class="busy-indicator"></div>
+            <div class="trail"></div>
+        </div>
+        <p class="info">Processing... Please wait</p>
+    </div>
+
+    <script>
+        // Trail effect following a circular path
+        const container = document.querySelector('.busy-mouse-container');
+        const trail = container.querySelector('.trail');
+        const centerX = container.offsetWidth / 2;
+        const centerY = container.offsetHeight / 2;
+        const radius = 45;
+        let angle = 0;
+
+        setInterval(() => {
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+
+            const dot = document.createElement('div');
+            dot.className = 'trail-dot';
+            dot.style.left = x + 'px';
+            dot.style.top = y + 'px';
+            trail.appendChild(dot);
+
+            // Remove old dots
+            const dots = trail.querySelectorAll('.trail-dot');
+            if (dots.length > 8) {
+                dots[0].remove();
+            }
+
+            angle += 0.15;
+        }, 50);
+    </script>
+</body>
+</html>
