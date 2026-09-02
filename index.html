@@ -15,15 +15,29 @@
             width: 100%;
             height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
         }
 
-        .container {
+        .left-container {
+            width: 50%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mouse-section {
             text-align: center;
+        }
+
+        .right-container {
+            width: 50%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
         }
 
         h1 {
@@ -225,24 +239,168 @@
             font-size: 1.1rem;
             opacity: 0.9;
         }
+
+        /* Chat panel styles */
+        .chat-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 20px;
+            background: rgba(102, 126, 234, 0.2);
+            border-bottom: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .chat-header h2 {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 80%;
+            word-wrap: break-word;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .message.system {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 3px solid #667eea;
+            align-self: flex-start;
+        }
+
+        .message.user {
+            background: #667eea;
+            color: white;
+            align-self: flex-end;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .chat-input-container {
+            padding: 20px;
+            background: rgba(102, 126, 234, 0.05);
+            border-top: 1px solid rgba(102, 126, 234, 0.2);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input:focus {
+            border-color: #667eea;
+        }
+
+        .send-button {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+        }
+
+        .send-button:hover {
+            background: #764ba2;
+        }
+
+        .send-button:active {
+            transform: scale(0.98);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom scrollbar for chat */
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(102, 126, 234, 0.5);
+            border-radius: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: rgba(102, 126, 234, 0.7);
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>⏳ Busy Mouse</h1>
-        <div class="busy-mouse-container">
-            <div class="mouse-body">
-                <div class="ear-left"></div>
-                <div class="ear-right"></div>
-                <div class="eye eye-left"></div>
-                <div class="eye eye-right"></div>
-                <div class="nose"></div>
-                <div class="tail"></div>
+    <div class="left-container">
+        <div class="mouse-section">
+            <h1>⏳ Busy Mouse</h1>
+            <div class="busy-mouse-container">
+                <div class="mouse-body">
+                    <div class="ear-left"></div>
+                    <div class="ear-right"></div>
+                    <div class="eye eye-left"></div>
+                    <div class="eye eye-right"></div>
+                    <div class="nose"></div>
+                    <div class="tail"></div>
+                </div>
+                <div class="busy-indicator"></div>
+                <div class="trail"></div>
             </div>
-            <div class="busy-indicator"></div>
-            <div class="trail"></div>
+            <p class="info">Processing... Please wait</p>
         </div>
-        <p class="info">Processing... Please wait</p>
+    </div>
+
+    <div class="right-container">
+        <div class="chat-panel">
+            <div class="chat-header">
+                <h2>Chat</h2>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message system">Welcome! I'm here to help you.</div>
+                <div class="message system">Feel free to send me a message!</div>
+            </div>
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type a message...">
+                <button class="send-button" id="sendButton">Send</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -275,6 +433,50 @@
             angle += 0.15;
             dotCount++;
         }, 50);
+
+        // Chat functionality
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendButton = document.getElementById('sendButton');
+
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function sendMessage() {
+            const messageText = chatInput.value.trim();
+
+            if (messageText === '') {
+                return;
+            }
+
+            // Create user message element
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user';
+            messageDiv.textContent = messageText;
+
+            // Append to chat
+            chatMessages.appendChild(messageDiv);
+
+            // Clear input
+            chatInput.value = '';
+
+            // Scroll to bottom
+            scrollToBottom();
+        }
+
+        // Send button click handler
+        sendButton.addEventListener('click', sendMessage);
+
+        // Enter key handler
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Initial scroll to show all messages
+        scrollToBottom();
     </script>
 </body>
 </html>
