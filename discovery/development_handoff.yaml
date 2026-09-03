@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "run_id": "make-background-blue-mtks47dh",
+  "feature_id": "make-background-blue",
+  "two_pager": "docs/neuron/two-pagers/make-background-blue.md",
+  "context_manifest": [],
+  "expected_artifacts": [],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "statement": "Opening `index.html` in a browser shows a blue-toned background (no purple/violet hue) filling the full viewport.",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-2",
+      "statement": "The gradient effect (`linear-gradient(135deg, ...)`) is preserved — two blue shades blending diagonally, not a flat single color, unless a flat blue is explicitly preferred.",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-3",
+      "statement": "All existing elements (mouse body, ears, eyes, nose, tail, spinning indicator, trail dots, heading, info text) remain visible and legible against the new background with no contrast regressions.",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-4",
+      "statement": "No other styles, markup, or script logic in `index.html` are modified.",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    }
+  ],
+  "acceptance_verification_map": [],
+  "assumptions_open": [],
+  "runtime_hints": {
+    "composition_strategy": "freeform-model-pool",
+    "max_wall_hours": 1,
+    "max_token_budget_usd": 8
+  }
+}
