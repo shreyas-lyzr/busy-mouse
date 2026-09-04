@@ -8,7 +8,7 @@ A pure CSS and JavaScript animated busy mouse cursor indicator. Features a cute 
 - 👀 Blinking eyes
 - 🎯 Spinning busy indicator
 - ✨ Trailing dot animation
-- 🎨 Gradient background
+- 🎨 Solid white background
 - 📱 Fully responsive
 - Pure CSS & JavaScript (no dependencies)
 
