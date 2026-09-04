@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "run_id": "make-the-background-red-mtm7psji",
+  "feature_id": "make-the-background-red",
+  "two_pager": "docs/neuron/two-pagers/make-the-background-red.md",
+  "context_manifest": [],
+  "expected_artifacts": [],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "statement": "Opening `index.html` in a browser shows a red (not purple/violet) background filling the full viewport behind the \"Busy Mouse\" widget.",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-2",
+      "statement": "The `body` CSS rule's `background` value uses red tones (e.g. a red hex/gradient) and no longer contains `#667eea` or `#764ba2`.",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-3",
+      "statement": "All other visual elements (mouse body/ears/eyes/nose/tail, spinning busy indicator, trail dots, heading, info text) remain unchanged in color and behavior.",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-4",
+      "statement": "White text (`h1`, `.info`) remains clearly legible against the new red background.",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-5",
+      "statement": "No other files in the repo reference the old gradient colors that would cause visual inconsistency.",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    }
+  ],
+  "acceptance_verification_map": [],
+  "assumptions_open": [],
+  "runtime_hints": {
+    "composition_strategy": "freeform-model-pool",
+    "max_wall_hours": 1,
+    "max_token_budget_usd": 8
+  }
+}
