@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "run_id": "make-a-starry-background-mtmr6pfl",
+  "feature_id": "make-a-starry-background",
+  "two_pager": "docs/neuron/two-pagers/make-a-starry-background.md",
+  "context_manifest": [],
+  "expected_artifacts": [],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "statement": "Loading `index.html` shows a field of stars covering the full viewport behind the gradient and mouse scene",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-2",
+      "statement": "Stars twinkle (opacity/brightness pulse) with varied timing so the effect doesn't look mechanically uniform",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-3",
+      "statement": "Star layer does not block or shift the existing mouse animation, trail effect, or text (pointer-events disabled, correct z-index/stacking)",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-4",
+      "statement": "Background remains responsive — stars redistribute or rescale correctly on window resize, no clipping or fixed-size overflow",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-5",
+      "statement": "No new dependencies introduced; effect implemented in pure CSS/JS matching existing file's inline `<style>`/`<script>` structure",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-6",
+      "statement": "Page still renders correctly and performs smoothly (no visible jank) with the star count chosen",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    }
+  ],
+  "acceptance_verification_map": [],
+  "assumptions_open": [],
+  "runtime_hints": {
+    "composition_strategy": "freeform-model-pool",
+    "max_wall_hours": 1,
+    "max_token_budget_usd": 8
+  }
+}
