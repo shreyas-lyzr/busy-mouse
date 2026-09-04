@@ -1,0 +1,56 @@
+worker_id: w2
+role: background-regression-test-author
+status: partial
+artifacts_written:
+  - tests/test_background.mjs
+context_read:
+  - docs/neuron/two-pagers/make-the-background-red.md
+  - discovery/development_handoff.yaml
+  - index.html
+  - README.md
+acceptance_criteria_addressed: [AC-2, AC-3, AC-4, AC-5]
+tests_run: "node tests/test_background.mjs"
+tests_passing: false
+notes: >-
+  Wrote a dependency-free Node (ESM, node:fs/node:path only) script at
+  tests/test_background.mjs that checks all five items from the instruction:
+  (1) parses the `body { ... }` rule's `background:` declaration, extracts
+  every hex/rgb/named-red color stop, and asserts the red channel exceeds both
+  green and blue by a margin of >=15 for each stop; (2) asserts `#667eea` and
+  `#764ba2` do not appear anywhere in index.html, case-insensitively; (3)
+  re-parses the exact CSS rule blocks for .mouse-body/.ear-left/.ear-right/
+  .tail (background:#fff), .eye (#333), .nose (#ff6b9d), .trail-dot
+  (rgba(59,130,246,0.8)), .trail-dot.red (rgba(147,197,253,0.8)), and h1/.info
+  (color:white), using selector-boundary-aware regex so e.g. `.eye` doesn't
+  false-match `.eye-left` and `.trail-dot` doesn't false-match
+  `.trail-dot.red`; (4) computes WCAG relative luminance/contrast ratio for
+  each body-background color stop against opaque white and requires >=4.5:1;
+  (5) walks the whole repo excluding top-level .git/, docs/, discovery/,
+  tests/ and flags any remaining file that still contains either old hex
+  (case-insensitive), skipping unreadable/binary files.
+
+  I could not just take the harness's word that the script "passes" -- I
+  built four synthetic scratch copies of index.html in /tmp (never touching
+  the real index.html, which is outside my write scope) to exercise every
+  branch: a proper dark-red gradient (PASS, exit 0), a too-light red gradient
+  (correctly fails only AC-4, contrast ~2-3:1), a brownish/orange color that
+  is still red-dominant by the literal "red channel largest by a clear
+  margin" wording (correctly PASSES AC-2 as specified, even though it reads
+  as brown to the eye -- this is the letter of the given spec, not a bug),
+  a tampered .nose color (correctly fails only AC-3), and a stray leftover
+  old-hex reference in a non-excluded directory alongside one inside docs/
+  (correctly flags only the non-excluded one). All five behaved as expected.
+
+  Per instructions I did NOT edit index.html (out of my write scope; the
+  implementer's change lands in a different worker's worktree and is merged
+  later). Running `node tests/test_background.mjs` against THIS worktree's
+  current index.html therefore still fails with 7 assertions (AC-2 x4, AC-4
+  x1, AC-5 x2) because index.html here still has the original purple gradient
+  (#667eea/#764ba2) -- that is the expected/correct outcome given the
+  red-background change has not been applied in this worktree, not a defect
+  in the test. Status is "partial" rather than "complete" strictly because
+  the instruction asked me to confirm the script passes against the current
+  working tree, and in this worktree it cannot pass until the implementer's
+  index.html change is merged in. The test itself is finished and verified
+  correct via the synthetic-copy runs above; once the red-background edit
+  lands in index.html, `node tests/test_background.mjs` should pass unchanged.
