@@ -26,6 +26,21 @@
             text-align: center;
         }
 
+        /* Twinkling starfield background layer. Sits behind .container via a
+           negative z-index (category "negative z-index descendant" in the
+           painting order), so .container -- which stays unpositioned/z-index:auto
+           on purpose -- still paints above it without needing changes itself. */
+        #stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            display: block;
+        }
+
         h1 {
             color: white;
             margin-bottom: 40px;
@@ -228,6 +243,7 @@
     </style>
 </head>
 <body>
+    <canvas id="stars"></canvas>
     <div class="container">
         <h1>⏳ Busy Mouse</h1>
         <div class="busy-mouse-container">
@@ -246,6 +262,81 @@
     </div>
 
     <script>
+        // Twinkling starfield background
+        (function () {
+            const canvas = document.getElementById('stars');
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+            let width = 0;
+            let height = 0;
+            let dpr = window.devicePixelRatio || 1;
+
+            // Density-scaled star count: roughly one star per 6000px^2 of
+            // viewport area, clamped to a range that stays smooth on both
+            // small and very large viewports (~100-250 stars).
+            function starCountFor(w, h) {
+                const area = w * h;
+                return Math.max(100, Math.min(250, Math.round(area / 6000)));
+            }
+
+            function createStars(w, h) {
+                const count = starCountFor(w, h);
+                const arr = [];
+                for (let i = 0; i < count; i++) {
+                    arr.push({
+                        x: Math.random() * w,
+                        y: Math.random() * h,
+                        radius: Math.random() * 1.4 + 0.4,
+                        baseAlpha: Math.random() * 0.5 + 0.3,
+                        amp: Math.random() * 0.45 + 0.2,
+                        // Randomized per-star speed and phase so twinkling
+                        // never falls into lockstep across stars.
+                        speed: Math.random() * 1.6 + 0.4,
+                        phase: Math.random() * Math.PI * 2
+                    });
+                }
+                return arr;
+            }
+
+            function resize() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                dpr = window.devicePixelRatio || 1;
+                canvas.width = Math.round(width * dpr);
+                canvas.height = Math.round(height * dpr);
+                canvas.style.width = width + 'px';
+                canvas.style.height = height + 'px';
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                // Regenerate the field so it always fills the new viewport
+                // with no clipping and no leftover blank band.
+                stars = createStars(width, height);
+            }
+
+            // Debounce resize handling to avoid thrashing on drag-resize.
+            let resizeTimer = null;
+            window.addEventListener('resize', function () {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(resize, 150);
+            });
+
+            function draw(timeMs) {
+                const t = timeMs / 1000;
+                ctx.clearRect(0, 0, width, height);
+                for (let i = 0; i < stars.length; i++) {
+                    const s = stars[i];
+                    const alpha = Math.min(1, Math.max(0, s.baseAlpha + s.amp * Math.sin(t * s.speed + s.phase)));
+                    ctx.beginPath();
+                    ctx.fillStyle = 'rgba(255, 255, 255, ' + alpha.toFixed(3) + ')';
+                    ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                requestAnimationFrame(draw);
+            }
+
+            resize();
+            requestAnimationFrame(draw);
+        })();
+
         // Trail effect following a circular path
         const container = document.querySelector('.busy-mouse-container');
         const trail = container.querySelector('.trail');

@@ -9,6 +9,7 @@ A pure CSS and JavaScript animated busy mouse cursor indicator. Features a cute 
 - 🎯 Spinning busy indicator
 - ✨ Trailing dot animation
 - 🎨 Gradient background
+- ⭐ Starry background
 - 📱 Fully responsive
 - Pure CSS & JavaScript (no dependencies)
 
@@ -23,5 +24,6 @@ Open `index.html` in your browser to see the animated busy mouse.
 - **Swish**: Tail swishes back and forth
 - **Spin**: Busy indicator spins continuously
 - **Trail**: Dots orbit around the mouse
+- **Twinkle**: Stars twinkle with varied timing across the starfield
 
 Perfect for loading screens, processing indicators, or just for fun!
