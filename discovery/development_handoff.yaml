@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "run_id": "add-planets-in-the-background-mtmmznbp",
+  "feature_id": "add-planets-in-the-background",
+  "two_pager": "docs/neuron/two-pagers/add-planets-in-the-background.md",
+  "context_manifest": [],
+  "expected_artifacts": [],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "statement": "Exactly 4–5 visually distinct planets render behind the mouse scene without obscuring it",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-2",
+      "statement": "Each planet has a different color (e.g. red, blue, orange, teal, purple via distinct solid/radial-gradient fills)",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-3",
+      "statement": "Planets are completely static — fixed position and size, no CSS animation/transition/keyframes applied to `.planet`",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-4",
+      "statement": "Planets use `position: fixed`/`absolute` with `z-index` lower than `.container`, `.busy-mouse-container`, and `.trail`",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-5",
+      "statement": "Page remains dependency-free (pure HTML/CSS/inline JS) and `overflow: hidden` on `body` still prevents scrollbars from planet placement",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-6",
+      "statement": "Layout stays centered and responsive at common viewport sizes (planets don't push/resize `.container`)",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-7",
+      "statement": "README updated to mention the static planet background feature",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    }
+  ],
+  "acceptance_verification_map": [],
+  "assumptions_open": [],
+  "runtime_hints": {
+    "composition_strategy": "freeform-model-pool",
+    "max_wall_hours": 1,
+    "max_token_budget_usd": 8
+  }
+}
