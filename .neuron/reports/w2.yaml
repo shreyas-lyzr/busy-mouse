@@ -1,0 +1,38 @@
+worker_id: w2
+role: background-contrast-test-author
+status: complete
+artifacts_written:
+  - tests/test_background.py
+context_read:
+  - docs/neuron/two-pagers/make-the-background-blue.md
+  - discovery/development_handoff.yaml
+  - index.html
+acceptance_criteria_addressed: [AC-1, AC-2, AC-3, AC-4]
+tests_run: "python3 -m unittest discover tests -v"
+tests_passing: false
+notes: >-
+  Ran on the pre-change (purple/violet) baseline as instructed, since the
+  implementer worker owns index.html and I must not edit it. Results: 2 of 5
+  tests fail as expected against the baseline
+  (test_old_purple_violet_colors_are_gone: #667eea/#764ba2 still present;
+  test_every_background_color_stop_has_sufficient_contrast_with_white:
+  #667eea only gives a 3.66:1 contrast ratio against white, below the 4.5:1
+  floor). The remaining 3 tests pass already: the two "untouched literals /
+  keyframes" tests (expected, since nothing there has changed yet), and
+  test_every_background_color_stop_is_blue_dominant. That last one is worth
+  flagging: it passes on the *baseline* too, because #667eea (102,126,234)
+  and #764ba2 (118,75,162) both happen to have a numerically higher blue
+  channel than red/green even though they read as purple/violet to a human
+  eye. This is not a bug in the test - it implements exactly the rule given
+  ("blue channel strictly greater than both red and green"), and it will
+  still correctly fail if a future blue candidate color is not
+  blue-dominant. It just isn't one of the assertions that discriminates the
+  old vs. new state for this specific pair of hex values. Once the
+  implementer picks the actual blue value(s), rerun the suite - assertions
+  (1) and (3) should flip to green; (2) and (4) should stay green throughout.
+  Test file locates the repo root via Path(__file__).resolve().parent.parent,
+  uses only stdlib (re, unittest, pathlib), extracts the body{} rule with a
+  regex anchored on leading-whitespace-then-"body" so `.mouse-body{}` is not
+  matched, supports both #hex and rgb()/rgba() color-stop syntax, and
+  implements sRGB linearization + the (L1+0.05)/(L2+0.05) contrast formula
+  inline with no third-party packages. Did not touch index.html.
