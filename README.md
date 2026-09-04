@@ -16,6 +16,16 @@ A pure CSS and JavaScript animated busy mouse cursor indicator. Features a cute 
 
 Open `index.html` in your browser to see the animated busy mouse.
 
+## Chat Page
+
+A simple, self-contained chat UI is available in `chat.html`, matching the same gradient theme as the busy mouse page. Open `chat.html` directly in your browser to use it — no build step or dependencies required. It's also linked from the "💬 Open Chat" button on the main page (`index.html`).
+
+Features:
+
+- ⌨️ Type a message and send it via the send button or the Enter key
+- 📜 Message list auto-scrolls to the latest message
+- 🧹 Input field clears automatically after sending
+
 ## Animations
 
 - **Pulse**: The mouse body gently pulses
