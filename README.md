@@ -9,6 +9,7 @@ A pure CSS and JavaScript animated busy mouse cursor indicator. Features a cute 
 - 🎯 Spinning busy indicator
 - ✨ Trailing dot animation
 - 🎨 Gradient background
+- 🪐 Static planet background
 - 📱 Fully responsive
 - Pure CSS & JavaScript (no dependencies)
 
