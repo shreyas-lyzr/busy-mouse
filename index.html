@@ -24,6 +24,72 @@
 
         .container {
             text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Decorative static planet background layer */
+        .planets-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .planet-1 {
+            top: 8%;
+            left: 10%;
+            width: 14vmin;
+            height: 14vmin;
+            background: radial-gradient(circle at 35% 30%, #ff8a8a 0%, #e63946 55%, #a4161a 100%);
+            box-shadow: inset -6px -6px 14px rgba(0, 0, 0, 0.35);
+            opacity: 0.55;
+        }
+
+        .planet-2 {
+            top: 65%;
+            left: 6%;
+            width: 9vmin;
+            height: 9vmin;
+            background: radial-gradient(circle at 35% 30%, #7fb2ff 0%, #3b82f6 55%, #1e3a8a 100%);
+            box-shadow: inset -5px -5px 12px rgba(0, 0, 0, 0.35);
+            opacity: 0.5;
+        }
+
+        .planet-3 {
+            top: 15%;
+            left: 82%;
+            width: 11vmin;
+            height: 11vmin;
+            background: radial-gradient(circle at 35% 30%, #ffcf8a 0%, #fb8500 55%, #9a4d00 100%);
+            box-shadow: inset -5px -5px 12px rgba(0, 0, 0, 0.35);
+            opacity: 0.5;
+        }
+
+        .planet-4 {
+            top: 78%;
+            left: 78%;
+            width: 16vmin;
+            height: 16vmin;
+            background: radial-gradient(circle at 35% 30%, #7fe8d8 0%, #14b8a6 55%, #0f6f63 100%);
+            box-shadow: inset -6px -6px 14px rgba(0, 0, 0, 0.35);
+            opacity: 0.45;
+        }
+
+        .planet-5 {
+            top: 42%;
+            left: 90%;
+            width: 7vmin;
+            height: 7vmin;
+            background: radial-gradient(circle at 35% 30%, #d9a8ff 0%, #9333ea 55%, #5b0f9e 100%);
+            box-shadow: inset -4px -4px 10px rgba(0, 0, 0, 0.35);
+            opacity: 0.5;
         }
 
         h1 {
@@ -228,6 +294,13 @@
     </style>
 </head>
 <body>
+    <div class="planets-bg">
+        <div class="planet planet-1"></div>
+        <div class="planet planet-2"></div>
+        <div class="planet planet-3"></div>
+        <div class="planet planet-4"></div>
+        <div class="planet planet-5"></div>
+    </div>
     <div class="container">
         <h1>⏳ Busy Mouse</h1>
         <div class="busy-mouse-container">
