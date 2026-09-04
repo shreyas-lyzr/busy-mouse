@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "run_id": "make-a-white-background-mtmy2gsu",
+  "feature_id": "make-a-white-background",
+  "two_pager": "docs/neuron/two-pagers/make-a-white-background.md",
+  "context_manifest": [],
+  "expected_artifacts": [],
+  "acceptance_criteria": [
+    {
+      "id": "AC-1",
+      "statement": "The rendered page uses a solid white background with no visible gradient.",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-2",
+      "statement": "The busy mouse remains centered and all existing animations continue functioning.",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-3",
+      "statement": "Heading and informational text remain readable against the white background.",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-4",
+      "statement": "The busy indicator and other white mouse elements remain visually distinguishable on the white page.",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    },
+    {
+      "id": "AC-5",
+      "statement": "README documentation no longer claims the page has a gradient background.",
+      "success_condition": "implemented as described and the repo's existing tests still pass"
+    }
+  ],
+  "acceptance_verification_map": [],
+  "assumptions_open": [],
+  "runtime_hints": {
+    "composition_strategy": "freeform-model-pool",
+    "max_wall_hours": 1,
+    "max_token_budget_usd": 8
+  }
+}
