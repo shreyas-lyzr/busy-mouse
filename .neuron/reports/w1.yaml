@@ -1,0 +1,89 @@
+worker_id: w1
+role: starfield-implementer
+status: complete
+artifacts_written:
+  - index.html
+context_read:
+  - docs/neuron/two-pagers/make-a-starry-background.md
+  - discovery/development_handoff.yaml
+  - index.html
+acceptance_criteria_addressed: [AC-1, AC-2, AC-3, AC-4, AC-5, AC-6]
+tests_run: "no test runner in repo; verified via node --check on the extracted inline <script> block, manual re-read of the full file, and static checks (balanced <div>/</div> counts, DOCTYPE/html closure, canvas tag present)"
+tests_passing: true
+notes: >-
+  Implementation choice: canvas (#stars) rather than a .stars div, because a
+  single canvas with one requestAnimationFrame loop draws 100-250 twinkling
+  circles far cheaper than 100-250 separate DOM nodes each running its own CSS
+  animation, and it makes per-star randomized phase/speed trivial (a shared
+  CSS @keyframes applied uniformly to many elements would risk visible
+  lockstep unless every element got a distinct inline animation-delay/duration,
+  which is more code and more DOM than the canvas approach for the same
+  effect). Canvas is added as the first child of <body>, before .container,
+  exactly as instructed.
+
+  Star count: density-scaled via Math.round(viewport_area / 6000), clamped to
+  [100, 250]. This lands at 250 on large/desktop viewports (e.g. 1920x1080 ->
+  345 raw, clamped to 250) and 100 on small viewports (e.g. 800x600 -> 80 raw,
+  clamped up to 100), keeping the effect visually full but bounded so the
+  per-frame canvas draw loop (one arc() + one fill() per star, no per-star DOM
+  or CSS animation) stays cheap regardless of screen size. This satisfies the
+  "roughly 100-250, or density-scaled" guidance directly.
+
+  Stacking/z-index: gave #stars `position: fixed; z-index: -1;` and left
+  .container, .busy-mouse-container, and all mouse-scene descendants
+  untouched (no z-index added to them), per the instruction to introduce
+  z-index only as needed. Rationale documented inline in the CSS comment:
+  non-positioned in-flow descendants (.container, category 3 in the CSS2
+  painting-order spec) always paint above positioned descendants with
+  negative z-index (category 2), regardless of DOM order, so #stars at
+  z-index:-1 is guaranteed to sit behind .container without modifying it.
+  pointer-events: none is set on #stars so it cannot intercept the mouse
+  scene or trail.
+
+  One nuance on AC-1's literal wording ("behind the gradient and mouse
+  scene"): body's `background: linear-gradient(...)` is promoted by the CSS
+  spec to paint as the viewport/canvas background (the absolute bottom-most
+  paint layer) because body is the sole element carrying a background and
+  html has none. That means nothing -- not even a negative-z-index element --
+  can visually paint "behind" it while remaining visible; if #stars were
+  literally behind the gradient, the opaque gradient would fully occlude
+  every star and AC-1 ("shows a field of stars") would be unmet. I resolved
+  this by placing the starfield visually on top of the gradient but behind
+  the mouse scene, which is the only configuration under which both AC-1 (stars
+  visible, covering the viewport) and AC-3 (stars behind/not interfering with
+  the mouse scene) can both hold simultaneously. I did not change the
+  gradient itself, as instructed.
+
+  Resize handling: a `resize` listener debounced 150ms recomputes
+  window.innerWidth/innerHeight and devicePixelRatio, resizes the canvas
+  backing store (width/height attributes) and CSS box (style.width/height)
+  together, re-applies ctx.setTransform(dpr,...) for crisp (non-blurry)
+  rendering, and regenerates the star field for the new dimensions -- so
+  there is no clipping, no stale fixed-size overflow, and no blank band after
+  a resize.
+
+  Twinkle timing: each star gets its own random `speed` (0.4-2.0 rad/s) and
+  `phase` (0-2*pi) used in `baseAlpha + amp * sin(t*speed + phase)`, so no two
+  stars share both frequency and phase -- this is the per-star phase-offset
+  approach the task explicitly allows as an alternative to per-element CSS
+  keyframes, and it directly avoids the "single shared keyframe applied
+  uniformly" failure mode called out for AC-2.
+
+  Did not touch the pulse/spin/fadeOut/blink/swish keyframes or the trail
+  setInterval logic; re-read the full file afterward and confirmed
+  `document.querySelector('.busy-mouse-container')` and
+  `container.querySelector('.trail')` still resolve, since .busy-mouse-container
+  and its .trail child are untouched and the new canvas is a sibling, not an
+  ancestor/descendant, of .container.
+
+  Honest verification scope: I cannot open a browser in this environment, so
+  AC-1, AC-2, AC-3, AC-4, and AC-6 are verified by static/code reasoning
+  (re-reading the CSS/JS, the CSS painting-order rules for z-index, and the
+  animation math) rather than by an actual visual/runtime check. AC-5 (no new
+  dependencies) I did verify directly -- no new files, no <link>/<script src>
+  additions, no CDN references; everything lives in the existing inline
+  <style>/<script> blocks. `node --check` confirms the script block is
+  syntactically valid JS, and a manual re-read confirms the HTML tag
+  structure is intact, but neither of those constitutes a real-browser
+  confirmation of smooth rendering (AC-6) or actual visual non-interference
+  (AC-3) -- a human or a browser-capable agent should still eyeball it.
